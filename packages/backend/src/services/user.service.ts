@@ -48,7 +48,7 @@ const parseUserToUserDocument = (user: User): any => {
 
 const parseUserDocumentToUser = (user: any): User => {
   return {
-    id: user.id,
+    id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     gender: user.gender,

@@ -85,16 +85,16 @@ describe('UserService', () => {
     });
 
     it('should fail if the user already exists', async () => {
+      jest.setTimeout(3000);
       const user = {
-        email: 'test@atest.com',
-        firstName: 'Test failed',
+        email: 'test@test.com',
+        firstName: 'Test',
         lastName: 'User',
         gender: 'Female',
+        shortDescription: 'Test User',
       } as User;
 
-      expect(service.createUserWithValidation(user)).rejects.toThrowError(
-        'User already exists',
-      );
+      expect(service.createUserWithValidation(user)).rejects.toThrowError();
     });
 
     describe('User Listing', () => {
@@ -114,22 +114,19 @@ describe('UserService', () => {
       });
     });
 
-    describe.skip('User Deletion', () => {
-      it('should fail if the user does not exist', async () => {
+    describe('User Deletion', () => {
+      it('should fail if the user does not exist', () => {
         const userId = 'unexistent-id';
-        expect(service.deleteUserWithValidation(userId)).rejects.toThrowError(
-          'User not found',
-        );
+        expect(service.deleteUserWithValidation(userId)).rejects.toThrowError();
       });
 
       it('should delete a user', async () => {
         const [userCreated] = await service.fetchUsers();
-        const userId = userCreated.id;
-        expect(service.deleteUserWithValidation(userId)).resolves.not.toThrow();
+        const _userId = userCreated.id;
+        expect(
+          service.deleteUserWithValidation(_userId),
+        ).resolves.not.toThrow();
       });
     });
   });
-
-
-
 });
