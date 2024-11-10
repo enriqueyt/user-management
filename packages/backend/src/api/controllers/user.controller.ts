@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { UserService } from '../../services';
 import { UserDto } from '../dtos';
 import { ApiCreatedResponse } from '@nestjs/swagger';
@@ -13,5 +13,16 @@ export class UserController {
   @Serialize(UserDto)
   async createUser(@Body() user: UserDto) {
     return this.userService.createUserWithValidation(user);
+  }
+
+  @Put('all')
+  @Serialize(UserDto)
+  async fetchUsers(@Body() filter?: Partial<UserDto>) {
+    return this.userService.fetchUsers(filter);
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param() id: string) {
+    return this.userService.deleteUserWithValidation(id);
   }
 }
