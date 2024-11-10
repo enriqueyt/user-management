@@ -4,12 +4,12 @@ import { defaultUser, User } from '../../entities/User';
 import { useSelector, useDispatch } from 'react-redux';
 import { addUser, deleteUser } from '../../redux/userSlice';
 import { RootState } from '../../redux/store';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import userBusinessLogic from '../../business/user'
 
 const UserIndex = () => {
   const users = useSelector((state: RootState) => state.users.users);
-
+  const { business } = userBusinessLogic();
   const [user, setUser] = useState(defaultUser);
 
   const dispatch = useDispatch();
@@ -22,10 +22,14 @@ const UserIndex = () => {
     dispatch(deleteUser(userId));
   };
 
+  useEffect(() => {
+    business.getAllUsers();
+  }, []);
+
   return (
     <div>
-      <UserForm onSubmit={handleUserSubmit}  user={user}/>
-      <UserList onDelete={handleDeleteUser} users={users}/>
+      <UserForm onSubmit={handleUserSubmit} user={user} />
+      <UserList onDelete={handleDeleteUser} users={users} />
     </div>
   );
 };
