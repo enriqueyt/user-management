@@ -25,4 +25,14 @@ export class UserController {
   async deleteUser(@Param() id: string) {
     return this.userService.deleteUserWithValidation(id);
   }
+
+  @Put('list/:limit/:skip')
+  async filterUsersWithPagination(
+    @Body() user: Partial<UserDto>,
+    @Param() limit: number,
+    @Param() skip: number,
+  ) {
+    const filter = { ...user, limit, skip };
+    return this.userService.filterUsersWithPaginationRequest(filter);
+  }
 }

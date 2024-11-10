@@ -2,7 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { UserDocument } from './user-document';
-import { IFilterUser } from 'core/user-layout/model';
+import {
+  IFilterUser,
+  UsersFilterWithPagination,
+} from '../../../core/user-layout/model';
 
 @Injectable()
 export class UserDBService {
@@ -23,12 +26,10 @@ export class UserDBService {
 
   async deleteUser(id: string): Promise<void> {
     try {
-      const user = await this.eventModel.aggregate([
-        { $match: { _id: id } },
-      ]);
+      const user = await this.eventModel.aggregate([{ $match: { _id: id } }]);
 
       if (user) {
-        await this.eventModel.deleteOne({_id: id});
+        await this.eventModel.deleteOne({ _id: id });
       }
     } catch (error) {
       throw error;
@@ -38,6 +39,41 @@ export class UserDBService {
   async fetchUsers(filter?: Partial<IFilterUser>): Promise<UserDocument[]> {
     const query = filter || {};
     return this.eventModel.find(query).exec();
+  }
+
+  async filterUsersWithPagination(
+    filter?: Partial<IFilterUser>,
+  ): Promise<UsersFilterWithPagination> {
+    const query = [];
+
+    if (filter?.firstName) {
+      query.push({ $match: { firstName: filter.firstName } });
+    }
+
+    if (filter?.lastName) {
+      query.push({ $match: { lastName: filter.lastName } });
+    }
+
+    if (filter?.email) {
+      query.push({ $match: { email: filter.email } });
+    }
+
+    const countPipeline = [...query, { $count: 'total' }];
+    const dataPipeline = [...query];
+
+    if (filter?.limit && filter?.skip) {
+      dataPipeline.push({ $limit: filter.limit, $skip: filter.skip });
+    }
+
+    const [users, count] = await Promise.all([
+      this.eventModel.aggregate(dataPipeline),
+      this.eventModel.aggregate(countPipeline),
+    ]);
+
+    return {
+      data: users,
+      total: count[0]?.total || 0,
+    };
   }
 
   async getUserById(id: string): Promise<UserDocument> {

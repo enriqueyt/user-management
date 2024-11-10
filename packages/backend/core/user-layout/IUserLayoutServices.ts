@@ -1,4 +1,4 @@
-import { IFilterUser, User } from './model';
+import { IFilterUser, User, UsersFilterWithPagination } from './model';
 import { verifiedIfUserExist } from './model/invarians';
 
 export abstract class IUserLayoutServices {
@@ -36,4 +36,8 @@ export abstract class IUserLayoutServices {
 
     await this.deleteUser(id);
   }
+
+  protected abstract filterUsersWithPagination(
+    filter?: Partial<IFilterUser>,
+  ): Promise<UsersFilterWithPagination>;
 }

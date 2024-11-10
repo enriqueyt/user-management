@@ -14,4 +14,12 @@ export interface IFilterUser {
   firstName: string;
   lastName: string;
   email: string;
+
+  limit?: number;
+  skip?: number;
+}
+
+export interface UsersFilterWithPagination {
+  data: User[];
+  total: number;
 }
