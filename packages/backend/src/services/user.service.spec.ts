@@ -76,4 +76,20 @@ describe('UserService', () => {
       );
     });
   });
+
+  describe('User Deletion', async () => {
+    const [userCreated] = await service.listAllUsers();
+
+    it('should fail if the user does not exist', async () => {
+      const userId = 'unexistent-id';
+      expect(service.deleteUserWithValidation(userId)).rejects.toThrowError(
+        'User not found',
+      );
+    });
+
+    it('should delete a user', async () => {
+      const userId = userCreated.id;
+      expect(service.deleteUserWithValidation(userId)).resolves.not.toThrow();
+    });
+  });
 });
