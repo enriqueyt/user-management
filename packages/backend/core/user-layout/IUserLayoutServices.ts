@@ -1,4 +1,5 @@
 import { IFilterUser, User } from './model';
+import { verifiedIfUserExist } from './model/invarians';
 
 export abstract class IUserLayoutServices {
   constructor() {}
@@ -23,6 +24,7 @@ export abstract class IUserLayoutServices {
       throw new Error('Email is required');
     }
 
+    await verifiedIfUserExist(user, this.fetchUsers.bind(this));
     await this.createUser(user);
   }
 
