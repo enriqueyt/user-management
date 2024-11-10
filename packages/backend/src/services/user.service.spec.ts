@@ -34,7 +34,7 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
-  describe.only('User Creation', () => {
+  describe('User Management', () => {
     it('should fail if the user is missing a first name', async () => {
       const user = {
         email: 'test@test.com',
@@ -58,7 +58,7 @@ describe('UserService', () => {
       );
     });
 
-    it('shuuld fail if the user is missing an gender', async () => {
+    it('should fail if the user is missing an gender', async () => {
       const user = {
         email: 'test@test.com',
         firstName: 'Test',
@@ -72,9 +72,6 @@ describe('UserService', () => {
 
     it('should create a user', async () => {
       // jest.spyOn(service, 'createUser').mockImplementation(jest.fn());
-      // mock createUser
-
-      // jest.spyOn(service, 'createUser');.mockImplementation(jest.fn());
 
       const user = {
         email: 'test@test.com',
@@ -87,10 +84,10 @@ describe('UserService', () => {
       expect(service.createUserWithValidation(user)).resolves.not.toThrow();
     });
 
-    it.skip('should fail if the user already exists', async () => {
+    it('should fail if the user already exists', async () => {
       const user = {
         email: 'test@atest.com',
-        firstName: 'Test',
+        firstName: 'Test failed',
         lastName: 'User',
         gender: 'Female',
       } as User;
@@ -99,37 +96,40 @@ describe('UserService', () => {
         'User already exists',
       );
     });
+
+    describe('User Listing', () => {
+      it('should list all users', async () => {
+        const users = await service.fetchUsers();
+        expect(users).toHaveLength(1);
+      });
+
+      it('should list all users with a filter', async () => {
+        const filter = {
+          firstName: 'Test',
+          lastName: 'User',
+        };
+
+        const users = await service.fetchUsers(filter);
+        expect(users).toHaveLength(1);
+      });
+    });
+
+    describe.skip('User Deletion', () => {
+      it('should fail if the user does not exist', async () => {
+        const userId = 'unexistent-id';
+        expect(service.deleteUserWithValidation(userId)).rejects.toThrowError(
+          'User not found',
+        );
+      });
+
+      it('should delete a user', async () => {
+        const [userCreated] = await service.fetchUsers();
+        const userId = userCreated.id;
+        expect(service.deleteUserWithValidation(userId)).resolves.not.toThrow();
+      });
+    });
   });
 
-  describe('User Listing', () => {
-    it('should list all users', async () => {
-      const users = await service.fetchUsers();
-      expect(users).toHaveLength(1);
-    });
 
-    it('should list all users with a filter', async () => {
-      const filter = {
-        firstName: 'Test',
-        lastName: 'User',
-      };
 
-      const users = await service.fetchUsers(filter);
-      expect(users).toHaveLength(1);
-    });
-  });
-
-  describe('User Deletion', () => {
-    it('should fail if the user does not exist', async () => {
-      const userId = 'unexistent-id';
-      expect(service.deleteUserWithValidation(userId)).rejects.toThrowError(
-        'User not found',
-      );
-    });
-
-    it('should delete a user', async () => {
-      const [userCreated] = await service.fetchUsers();
-      const userId = userCreated.id;
-      expect(service.deleteUserWithValidation(userId)).resolves.not.toThrow();
-    });
-  });
 });
