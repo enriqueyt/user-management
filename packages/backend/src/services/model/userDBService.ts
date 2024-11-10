@@ -30,7 +30,8 @@ export class UserDBService {
   }
 
   async fetchUsers(filter?: Partial<IFilterUser>): Promise<UserDocument[]> {
-    return this.eventModel.find(filter).exec();
+    const query = filter || {};
+    return this.eventModel.find(query).exec();
   }
 
   async getUserById(id: string): Promise<UserDocument> {
