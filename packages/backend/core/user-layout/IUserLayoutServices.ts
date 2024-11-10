@@ -3,10 +3,10 @@ import { IFilterUser, User } from './model';
 export abstract class IUserLayoutServices {
   constructor() {}
 
-  abstract createUser(user: User): Promise<void>;
-  abstract getUserById(id: string): Promise<User>;
-  abstract deleteUser(user: string): Promise<void>;
-  abstract fetchUsers(): Promise<IFilterUser[]>;
+  protected abstract createUser(user: Partial<User>): Promise<void>;
+  protected abstract getUserById(id: string): Promise<User>;
+  protected abstract deleteUser(user: string): Promise<void>;
+  abstract fetchUsers(filter?: Partial<IFilterUser>): Promise<User[]>;
 
   protected async createUserWithValidation(user: User): Promise<void> {
     if (!user.firstName) {
@@ -15,6 +15,10 @@ export abstract class IUserLayoutServices {
     if (!user.lastName) {
       throw new Error('Last name is required');
     }
+    if (!user.gender) {
+      throw new Error('Gender is required');
+    }
+
     if (!user.email) {
       throw new Error('Email is required');
     }
