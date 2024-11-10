@@ -92,4 +92,21 @@ describe('UserService', () => {
       expect(service.deleteUserWithValidation(userId)).resolves.not.toThrow();
     });
   });
+
+  describe('User Listing', async () => {
+    it('should list all users', async () => {
+      const users = await service.listAllUsers();
+      expect(users).toHaveLength(1);
+    });
+
+    it('should list all users with a filter', async () => {
+      const filter = {
+        firstName: 'Test',
+        lastName: 'User'
+      };
+
+      const users = await service.listAllUsers(filter);
+      expect(users).toHaveLength(1);
+    });
+  });
 });
