@@ -15,4 +15,65 @@ describe('UserService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('User Creation', () => {
+    it('should fail if the user is missing a first name', async () => {
+      const user = {
+        email: 'test@test.com',
+        lastName: 'User',
+        gender: 'Famale',
+      };
+      expect(service.createUserWithValidation(user)).rejects.toThrowError(
+        'First name is required',
+      );
+    });
+
+    it('should fail if the user is missing a last name', async () => {
+      const user = {
+        email: 'test@test.com',
+        firstName: 'Test',
+        gender: 'Famale',
+      };
+
+      expect(service.createUserWithValidation(user)).rejects.toThrowError(
+        'Last name is required',
+      );
+    });
+
+    it('shuuld fail if the user is missing an gender', async () => {
+      const user = {
+        email: 'test@test.com',
+        firstName: 'Test',
+        lastName: 'User',
+      };
+
+      expect(service.createUserWithValidation(user)).rejects.toThrowError(
+        'Gender is required',
+      );
+    });
+
+    it('should create a user', async () => {
+      const user = {
+        email: 'test@test.com',
+        firstName: 'Test',
+        lastName: 'User',
+        gender: 'Famale',
+      };
+
+      expect(service.createUserWithValidation(user)).resolves.not.toThrow();
+    });
+
+    it('should fail if the user already exists', async () => {
+      const user = {
+        email: 'test@atest.com',
+        firstName: 'Test',
+        lastName: 'User',
+        gender: 'Famale',
+      };
+
+      expect(service.createUserWithValidation(user)).rejects.toThrowError(
+        'User already exists',
+      );
+    });
+  });
 });
