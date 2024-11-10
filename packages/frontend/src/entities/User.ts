@@ -14,8 +14,8 @@ export interface User {
 
 export const defaultUser: User = {
     id: '',
-    firstName: 'aa',
-    lastName: 'aa',
+    firstName: '',
+    lastName: '',
     gender: Gender.Female,
     email: '',
     description: ''
