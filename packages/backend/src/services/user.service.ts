@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUserLayoutServices } from '../../core/user-layout/IUserLayoutServices';
-import { User, IFilterUser } from '../../core/user-layout/model';
+import { User, IFilterUser, UsersFilterWithPagination } from '../../core/user-layout/model';
 import { UserDBService } from './model';
 
 @Injectable()
@@ -21,6 +21,18 @@ export class UserService extends IUserLayoutServices {
   async fetchUsers(filter?: Partial<IFilterUser>): Promise<User[]> {
     const users = await this.userDBService.fetchUsers(filter);
     return users.map((user) => parseUserDocumentToUser(user));
+  }
+
+  async filterUsersWithPaginationRequest(
+    filter?: Partial<IFilterUser>,
+  ): Promise<UsersFilterWithPagination> {
+    return this.filterUsersWithPagination(filter);
+  }
+
+  protected filterUsersWithPagination(
+    filter?: Partial<IFilterUser>,
+  ): Promise<UsersFilterWithPagination> {
+    return this.userDBService.filterUsersWithPagination(filter);
   }
 
   async createUserWithValidation(user: User): Promise<void> {
