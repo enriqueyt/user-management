@@ -4,13 +4,18 @@ import { UserService } from './user.service';
 describe('UserService', () => {
   let service: UserService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserService],
     }).compile();
 
     service = module.get<UserService>(UserService);
   });
+
+  // afterAll(async () => {
+  //   const users = await service.listAllUsers();
+  //   await Promise.all(users.map((user) => service.deleteUserWithValidation(user.id)));
+  // });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
