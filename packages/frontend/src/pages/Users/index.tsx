@@ -18,9 +18,14 @@ const UserIndex = () => {
     dispatch(addUser(user));
   };
 
+  const handleDeleteUser = (userId: string) => {
+    dispatch(deleteUser(userId));
+  };
+
   return (
     <div>
       <UserForm onSubmit={handleUserSubmit}  user={user}/>
+      <UserList onDelete={handleDeleteUser} users={users}/>
     </div>
   );
 };
