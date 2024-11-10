@@ -10,8 +10,15 @@ export class UserDBService {
     @InjectModel(UserDocument.name) private eventModel: Model<UserDocument>,
   ) {}
 
-  async create(user: UserDocument): Promise<UserDocument> {
-    return this.eventModel.create(user);
+  async createUser(user: UserDocument): Promise<void> {
+    try {
+      await this.eventModel.create(user);
+    } catch (error) {
+      if (error instanceof mongoose.Error.ValidationError) {
+        throw new Error(error.message);
+      }
+      throw error;
+    }
   }
 
   async deleteUser(id: string): Promise<UserDocument> {

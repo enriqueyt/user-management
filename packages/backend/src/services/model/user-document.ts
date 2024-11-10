@@ -19,10 +19,10 @@ export class UserDocument extends Document {
   shortDescription: string;
 
   @Prop({ required: true, default: Date.now })
-  createAt: Date;
+  createdAt: Date;
 
   @Prop({ required: true, default: Date.now })
-  updateAt: Date;
+  updatedAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);

@@ -6,7 +6,7 @@ import { UserDBService } from './model';
 @Injectable()
 export class UserService extends IUserLayoutServices {
   protected async createUser(user: User): Promise<void> {
-    await this.userDBService.create(parseUserToUserDocument(user));
+    await this.userDBService.createUser(parseUserToUserDocument(user));
   }
 
   protected async getUserById(id: string): Promise<User> {

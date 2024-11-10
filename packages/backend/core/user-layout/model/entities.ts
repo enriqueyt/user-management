@@ -1,4 +1,3 @@
-import e from "express";
 
 export class User {
   id?: string;
