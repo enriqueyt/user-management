@@ -21,12 +21,18 @@ export class UserDBService {
     }
   }
 
-  async deleteUser(id: string): Promise<UserDocument> {
-    const user = await this.eventModel.findByIdAndDelete(id).exec();
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
+  async deleteUser(id: string): Promise<void> {
+    try {
+      const user = await this.eventModel.aggregate([
+        { $match: { _id: id } },
+      ]);
+
+      if (user) {
+        await this.eventModel.deleteOne({_id: id});
+      }
+    } catch (error) {
+      throw error;
     }
-    return user;
   }
 
   async fetchUsers(filter?: Partial<IFilterUser>): Promise<UserDocument[]> {
