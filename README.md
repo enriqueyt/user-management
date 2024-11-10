@@ -11,3 +11,10 @@ yarn workspace workspace-name script-command
 ```
 
 Replace `workspace-name` with the name of your workspace and `script-command` with one of the script commands defined in the `package.json` of that workspace.
+
+## Build Docker Images:
+
+```
+docker build -t user-management-backend ./backend
+docker build -t user-management-frontend ./frontend
+```
