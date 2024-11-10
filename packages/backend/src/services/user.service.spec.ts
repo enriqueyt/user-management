@@ -22,7 +22,7 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('User Creation', () => {
+  describe.only('User Creation', () => {
     it('should fail if the user is missing a first name', async () => {
       const user = {
         email: 'test@test.com',
@@ -59,6 +59,11 @@ describe('UserService', () => {
     });
 
     it('should create a user', async () => {
+      // jest.spyOn(service, 'createUser').mockImplementation(jest.fn());
+      // mock createUser
+
+      // jest.spyOn(service, 'createUser');.mockImplementation(jest.fn());
+
       const user = {
         email: 'test@test.com',
         firstName: 'Test',

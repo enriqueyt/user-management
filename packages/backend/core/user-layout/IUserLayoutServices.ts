@@ -15,8 +15,8 @@ export abstract class IUserLayoutServices {
     if (!user.lastName) {
       throw new Error('Last name is required');
     }
-    if (!user.email) {
-      throw new Error('Email is required');
+    if (!user.gender) {
+      throw new Error('Gender is required');
     }
 
     await this.createUser(user);
