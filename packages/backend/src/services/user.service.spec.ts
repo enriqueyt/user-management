@@ -26,7 +26,7 @@ describe('UserService', () => {
   });
 
   // afterAll(async () => {
-  //   const users = await service.listAllUsers();
+  //   const users = await service.fetchUsers();
   //   await Promise.all(users.map((user) => service.deleteUserWithValidation(user.id)));
   // });
 
