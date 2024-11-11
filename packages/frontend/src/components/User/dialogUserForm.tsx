@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
 import { User, Gender } from '../../entities/User'; // Asegúrate de que tu interfaz User esté en este archivo
 import './form.css'
+import userBusinessLogic from '../../business/user'
+import FormDialog from '../Dialog';
 
-interface UserFormProps {
-    user?: User; // Si se proporciona un usuario, se está editando
-    onSubmit: (user: User) => void; // Callback para enviar los datos del formulario
-}
+interface UserFormProps { }
 
-const UserForm: React.FC<UserFormProps> = ({ user, onSubmit }) => {
+const DialogUserForm: React.FC<UserFormProps> = () => {
 
-    const [firstName, setFirstName] = useState(user?.firstName || '');
-    const [lastName, setLastName] = useState(user?.lastName || '');
-    const [email, setEmail] = useState(user?.email || '');
-    const [description, setDescription] = useState(user?.description || '');
+    const { business } = userBusinessLogic();
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [description, setDescription] = useState('');
     const [gender, setGender] = useState<Gender>(Gender.Male);
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async () => {
         const newUser: User = {
-            id: user?.id || Date.now().toString(), // Genera un ID único si es un nuevo usuario
             firstName,
             lastName,
             gender,
             email,
             description
         };
-        onSubmit(newUser);
+
+        await business.createUser(newUser);
+
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setDescription('');
     };
 
     const descriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -37,7 +43,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit }) => {
     };
 
     return (
-        <form>
+        <FormDialog saveUser={handleSubmit}>
+            <form>
             <label>
                 First Name:
                 <input
@@ -81,9 +88,9 @@ const UserForm: React.FC<UserFormProps> = ({ user, onSubmit }) => {
                     required
                 />
             </label>
-            <button type="button" onClick={handleSubmit}>Guardar</button>
         </form>
+        </FormDialog>
     );
 };
 
-export default UserForm;
+export default DialogUserForm;

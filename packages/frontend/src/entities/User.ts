@@ -1,10 +1,10 @@
 export enum Gender {
-    Male = 'male',
-    Female = 'female'
+    Male = 'Male',
+    Female = 'Female'
 }
 
 export interface User {
-    id: string;
+    id?: string;
     firstName: string;
     lastName: string;
     gender: Gender;

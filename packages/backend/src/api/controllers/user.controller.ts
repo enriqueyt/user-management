@@ -16,7 +16,7 @@ export class UserController {
   }
 
   @Put('all')
-  @Serialize(UserDto)
+  //@Serialize(UserDto)
   async fetchUsers(@Body() filter?: Partial<UserDto>) {
     return this.userService.fetchUsers(filter);
   }
