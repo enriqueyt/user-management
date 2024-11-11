@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    networks:
+      - app_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root 
+      MONGO_INITDB_ROOT_PASSWORD: examplepassword
+
+  # Backend Service
+  backend:
+    build:
+      context: ../packages/backend
+      dockerfile: Dockerfile
+    image: user-management-backend
+    depends_on:
+      - mongodb
+    networks:
+      - app_network
+    environment:
+      - MONGODB_URI=mongodb://root:examplepassword@mongodb:27017/user_management?authSource=admin
+    ports:
+      - "3000:3000"
+    command: npm run start:prod
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ../packages/frontend
+      dockerfile: Dockerfile
+    image: user-management-frontend 
+    depends_on:
+      - backend
+    networks:
+      - app_network
+    ports:
+      - "80:80"
+
+networks:
+  app_network:
+    driver: overlay
+
+volumes:
+  mongo_data:

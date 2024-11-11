@@ -18,3 +18,9 @@ Replace `workspace-name` with the name of your workspace and `script-command` wi
 docker build -t user-management-backend ./backend
 docker build -t user-management-frontend ./frontend
 ```
+## Run Containers Locally:
+
+```
+docker run -d -p 3000:3000 user-management-backend
+docker run -d -p 80:80 user-management-frontend
+```
