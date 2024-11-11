@@ -1,5 +1,5 @@
 import { IFilterUser, User, UsersFilterWithPagination } from './model';
-import { verifiedIfUserExist } from './model/invarians';
+import { validateRequiredFields, verifiedIfUserExist } from './model/invarians';
 
 export abstract class IUserLayoutServices {
   constructor() {}
@@ -10,19 +10,10 @@ export abstract class IUserLayoutServices {
   abstract fetchUsers(filter?: Partial<IFilterUser>): Promise<User[]>;
 
   protected async createUserWithValidation(user: User): Promise<void> {
-    if (!user.firstName) {
-      throw new Error('First name is required');
-    }
-    if (!user.lastName) {
-      throw new Error('Last name is required');
-    }
-    if (!user.gender) {
-      throw new Error('Gender is required');
-    }
-
-    if (!user.email) {
-      throw new Error('Email is required');
-    }
+    validateRequiredFields(user, 'firstName');
+    validateRequiredFields(user, 'lastName');
+    validateRequiredFields(user, 'gender');
+    validateRequiredFields(user, 'email');
 
     await verifiedIfUserExist(user, this.fetchUsers.bind(this));
     await this.createUser(user);
