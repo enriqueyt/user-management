@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { IUserLayoutServices } from '../../core/user-layout/IUserLayoutServices';
-import { User, IFilterUser, UsersFilterWithPagination } from '../../core/user-layout/model';
-import { UserDBService } from './model';
+import {
+  User,
+  IFilterUser,
+  UsersFilterWithPagination,
+} from '../../core/user-layout/model';
+import { UserDBService } from './model/userDBService';
 
 @Injectable()
 export class UserService extends IUserLayoutServices {
