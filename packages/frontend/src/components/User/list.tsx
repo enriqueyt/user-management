@@ -1,44 +1,52 @@
 import React from 'react';
-import { User } from '../../entities/User'; // Importar la interfaz User
+import { User } from '../../entities/User';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
 
 interface UserListProps {
-    users: User[]; 
+    users: User[];
     onDelete: (userId: string) => void;
 }
 
-const UserList: React.FC<UserListProps> = ({ users, onDelete}) => {
-    const handleDelete = (e: React.FormEvent, user: User) => {
-        e.preventDefault();
-        onDelete(user.id!);
-    };
+const UserList: React.FC<UserListProps> = ({ users, onDelete }) => {
+
+    const columns: GridColDef[] = [
+        { field: 'firstName', headerName: 'First name', width: 150 },
+        { field: 'lastName', headerName: 'Last name', width: 150 },
+        { field: 'gender', headerName: 'gender', width: 100 },
+        {
+            field: 'actions',
+            headerName: 'Actions',
+            width: 200,
+            renderCell: (params: GridRenderCellParams<User>) => {
+                const user = params.row;
+                return (
+                    <>
+                        <Tooltip title={user.description}>
+                            <span>Read More</span>
+                        </Tooltip>
+                        <button onClick={() => { onDelete(user.id!); }}>
+                            Edit
+                        </button>
+                    </>
+                );
+            },
+        }
+    ];
+
+    const paginationModel = { page: 0, pageSize: 3 };
+
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Gender</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {users.map((user) => (
-                    <tr key={user.id}>
-                        <td>{user.firstName}</td>
-                        <td>{user.lastName}</td>
-                        <td>{user.gender}</td>
-                        <td>{user.email}</td>
-                        <td>
-                            <span title={user.description}>See More</span>
-                            <button onClick={ e => handleDelete(e, user)}>
-                                Eliminar
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <Paper sx={{ height: 265, width: '700px' }}>
+            <DataGrid
+                rows={users}
+                columns={columns}
+                initialState={{ pagination: { paginationModel } }}
+                pageSizeOptions={[5, 10]}
+                sx={{ border: 0 }}
+            />
+        </Paper>
     );
 };
 
