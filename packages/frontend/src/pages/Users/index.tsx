@@ -1,7 +1,6 @@
-import UserForm from '../../components/User/form';
+import DialogUserForm from '../../components/User/dialogUserForm';
 import UserList from '../../components/User/list';
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteUser } from '../../redux/userSlice';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useEffect } from 'react';
 import userBusinessLogic from '../../business/user'
@@ -20,7 +19,7 @@ const UserIndex = () => {
 
   return (
     <div>
-      <UserForm />
+      <DialogUserForm />
       <UserList onDelete={handleDeleteUser} users={users} />
     </div>
   );

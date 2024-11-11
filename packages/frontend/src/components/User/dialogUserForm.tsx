@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { User, Gender } from '../../entities/User'; // Asegúrate de que tu interfaz User esté en este archivo
 import './form.css'
 import userBusinessLogic from '../../business/user'
+import FormDialog from '../Dialog';
 
 interface UserFormProps { }
 
-const UserForm: React.FC<UserFormProps> = () => {
+const DialogUserForm: React.FC<UserFormProps> = () => {
 
     const { business } = userBusinessLogic();
 
@@ -15,7 +16,7 @@ const UserForm: React.FC<UserFormProps> = () => {
     const [description, setDescription] = useState('');
     const [gender, setGender] = useState<Gender>(Gender.Male);
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    const handleSubmit = async () => {
         const newUser: User = {
             firstName,
             lastName,
@@ -42,7 +43,8 @@ const UserForm: React.FC<UserFormProps> = () => {
     };
 
     return (
-        <form>
+        <FormDialog saveUser={handleSubmit}>
+            <form>
             <label>
                 First Name:
                 <input
@@ -86,9 +88,9 @@ const UserForm: React.FC<UserFormProps> = () => {
                     required
                 />
             </label>
-            <button type="button" onClick={handleSubmit}>Guardar</button>
         </form>
+        </FormDialog>
     );
 };
 
-export default UserForm;
+export default DialogUserForm;
