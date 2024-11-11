@@ -41,8 +41,7 @@ const FormDialog: React.FC<DialogProps> = ({ children, saveUser }) => {
                 <DialogTitle>Subscribe</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We
-                        will send updates occasionally.
+                        Please enter your data
                     </DialogContentText>
                     {children}
                 </DialogContent>

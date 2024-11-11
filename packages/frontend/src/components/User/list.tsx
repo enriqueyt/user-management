@@ -23,11 +23,11 @@ const UserList: React.FC<UserListProps> = ({ users, onDelete }) => {
                 const user = params.row;
                 return (
                     <>
-                        <Tooltip title={user.description}>
+                        <Tooltip title={user.shortDescription}>
                             <span>Read More</span>
                         </Tooltip>
-                        <button onClick={() => { onDelete(user.id!); }}>
-                            Edit
+                        <button className='delete' onClick={() => { onDelete(user.id!); }}>
+                            remove
                         </button>
                     </>
                 );

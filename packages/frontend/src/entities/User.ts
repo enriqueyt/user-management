@@ -9,7 +9,7 @@ export interface User {
     lastName: string;
     gender: Gender;
     email: string;
-    description: string;
+    shortDescription: string;
 }
 
 export const defaultUser: User = {
@@ -18,5 +18,5 @@ export const defaultUser: User = {
     lastName: '',
     gender: Gender.Female,
     email: '',
-    description: ''
+    shortDescription: ''
 }
