@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { User } from '../../core/user-layout/model';
-import { UserDBService, UserDocument, UserSchema } from './model';
+import { UserDocument, UserSchema } from './model';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserDBService } from './model/userDBService';
 
 describe('UserService', () => {
   let service: UserService;
@@ -10,7 +11,7 @@ describe('UserService', () => {
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot('mongodb://localhost:27017/usermanagement', {
+        MongooseModule.forRoot('mongodb://127.0.0.1:27017/usermanagement', {
           // @ts-ignoredd
           useNewUrlParser: true,
           useUnifiedTopology: true,
@@ -25,10 +26,10 @@ describe('UserService', () => {
     service = module.get<UserService>(UserService);
   });
 
-  // afterAll(async () => {
-  //   const users = await service.fetchUsers();
-  //   await Promise.all(users.map((user) => service.deleteUserWithValidation(user.id)));
-  // });
+  afterAll(async () => {
+    const users = await service.fetchUsers();
+    await Promise.all(users.map((user) => service.deleteUserWithValidation(user.id)));
+  });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -42,7 +43,7 @@ describe('UserService', () => {
         gender: 'Famale',
       } as User;
       expect(service.createUserWithValidation(user)).rejects.toThrowError(
-        'First name is required',
+        'firstName is required',
       );
     });
 
@@ -54,7 +55,7 @@ describe('UserService', () => {
       } as User;
 
       expect(service.createUserWithValidation(user)).rejects.toThrowError(
-        'Last name is required',
+        'lastName is required',
       );
     });
 
@@ -66,7 +67,7 @@ describe('UserService', () => {
       } as User;
 
       expect(service.createUserWithValidation(user)).rejects.toThrowError(
-        'Gender is required',
+        'gender is required',
       );
     });
 
@@ -98,6 +99,7 @@ describe('UserService', () => {
     });
 
     describe('User Listing', () => {
+      jest.setTimeout(3000);
       it('should list all users', async () => {
         const users = await service.fetchUsers();
         expect(users).toHaveLength(1);
