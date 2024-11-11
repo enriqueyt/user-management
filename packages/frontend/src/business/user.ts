@@ -1,4 +1,4 @@
-import { getAllUsers as getAllUsersApi, createUser as  createUserApi} from '../api/user';
+import { getAllUsers as getAllUsersApi, createUser as  createUserApi, deleteUser as deleteUserApi} from '../api/user';
 import { useDispatch } from 'react-redux';
 import { setUserList } from '../redux/userSlice'
 import { User } from '../entities/User';
@@ -21,8 +21,13 @@ const UserBusinessLogic = () => {
         getAllUsers();
     }
 
+    const deleteUser = async (userId: string) => {
+        await deleteUserApi(userId)
+        getAllUsers();
+    }
+
     return {
-        business: { getAllUsers, createUser },
+        business: { getAllUsers, createUser, deleteUser },
     }
 }
 
