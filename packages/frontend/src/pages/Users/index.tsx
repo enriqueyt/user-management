@@ -10,10 +10,8 @@ const UserIndex = () => {
   const users = useSelector((state: RootState) => state.users.users);
   const { business } = userBusinessLogic();
 
-  const dispatch = useDispatch();
-
   const handleDeleteUser = (userId: string) => {
-    dispatch(deleteUser(userId));
+    business.deleteUser(userId);
   };
 
   useEffect(() => {

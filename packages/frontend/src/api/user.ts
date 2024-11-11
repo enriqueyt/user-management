@@ -44,3 +44,18 @@ export const createUser = async (user: User): Promise<boolean> => {
     }
     return false;
 };
+
+export const deleteUser = async (userId: string): Promise<void> => {
+    try {
+        const response = await fetch(`http://localhost:3000/user/${userId}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al eliminar el usuario');
+        }
+    } catch (error) {
+        console.error('Error al eliminar el usuario:', error);
+        throw error;
+    }
+};
