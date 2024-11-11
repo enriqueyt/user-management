@@ -77,7 +77,7 @@ export class UserDBService {
   }
 
   async getUserById(id: string): Promise<UserDocument> {
-    const user = await this.eventModel.findById(id).exec();
+    const [user] = await this.eventModel.aggregate([{ $match: { _id: new mongoose.Types.ObjectId(id) } }]);
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }

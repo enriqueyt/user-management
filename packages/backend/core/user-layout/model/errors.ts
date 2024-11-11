@@ -1,11 +1,13 @@
 export const ModelErrorCodes = {
   UserAlreadyExist: 1000,
   UserFieldRequiere: 1001,
+  UserNotFound: 1002,
 };
 
 export const ModelErrorMessages: { [code: number]: string } = {
   [ModelErrorCodes.UserAlreadyExist]: 'User already exist',
   [ModelErrorCodes.UserFieldRequiere]: 'is required',
+  [ModelErrorCodes.UserNotFound]: 'User not found',
 };
 
 export class BaseError extends Error {
@@ -34,6 +36,13 @@ export class UserFieldRequiereError extends BaseError {
       ModelErrorCodes.UserFieldRequiere,
       `${field} ${ModelErrorMessages[ModelErrorCodes.UserFieldRequiere]}`,
     );
+    this.name = this.constructor.name;
+  }
+}
+
+export class UserNotFoundError extends BaseError {
+  constructor() {
+    super(404, ModelErrorMessages[ModelErrorCodes.UserNotFound]);
     this.name = this.constructor.name;
   }
 }

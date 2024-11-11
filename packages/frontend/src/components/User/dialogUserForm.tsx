@@ -13,7 +13,7 @@ const DialogUserForm: React.FC<UserFormProps> = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
-    const [description, setDescription] = useState('');
+    const [shortDescription, setDescription] = useState('');
     const [gender, setGender] = useState<Gender>(Gender.Male);
 
     const handleSubmit = async () => {
@@ -22,7 +22,7 @@ const DialogUserForm: React.FC<UserFormProps> = () => {
             lastName,
             gender,
             email,
-            description
+            shortDescription
         };
 
         await business.createUser(newUser);
@@ -82,7 +82,7 @@ const DialogUserForm: React.FC<UserFormProps> = () => {
             <label>
                 Description:
                 <textarea
-                    value={description}
+                    value={shortDescription}
                     onChange={descriptionChange}
                     maxLength={200}
                     required

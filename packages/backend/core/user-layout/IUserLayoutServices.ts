@@ -1,5 +1,9 @@
 import { IFilterUser, User, UsersFilterWithPagination } from './model';
-import { validateRequiredFields, verifiedIfUserExist } from './model/invarians';
+import {
+  getIfExistUser,
+  validateRequiredFields,
+  verifiedIfUserExist,
+} from './model/invarians';
 
 export abstract class IUserLayoutServices {
   constructor() {}
@@ -20,12 +24,9 @@ export abstract class IUserLayoutServices {
   }
 
   protected async deleteUserWithValidation(id: string): Promise<void> {
-    const user = await this.getUserById(id);
-    if (!user) {
-      throw new Error('User not found');
-    }
+    const user = await getIfExistUser(id, this.getUserById.bind(this));
 
-    await this.deleteUser(id);
+    await this.deleteUser(user.id);
   }
 
   protected abstract filterUsersWithPagination(
