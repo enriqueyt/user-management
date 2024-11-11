@@ -21,3 +21,26 @@ export const getAllUsers = async (): Promise<User[]> => {
         throw error; // Re-throw the error to handle it at a higher level
     }
 };
+
+export const createUser = async (user: User): Promise<boolean> => {
+    try {
+        const response = await fetch('http://localhost:3000/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user),   
+
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al guardar el usuario');
+        }
+
+        //const data = await response.json();
+        return true;
+    } catch (error) {
+        console.error('Error al guardar el usuario:', error);
+    }
+    return false;
+};
