@@ -9,7 +9,7 @@ interface UserListProps {
 const UserList: React.FC<UserListProps> = ({ users, onDelete}) => {
     const handleDelete = (e: React.FormEvent, user: User) => {
         e.preventDefault();
-        onDelete(user.id);
+        onDelete(user.id!);
     };
     return (
         <table>
